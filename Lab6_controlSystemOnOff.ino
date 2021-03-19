@@ -76,7 +76,7 @@ void setup() {
 void loop() {
   
   Light.check();//Calls in Light sensor program
-  Serial.print(Light.getValue());//print voltage reading
+  Serial.println(Light.getValue());//print voltage reading
   Serial.print(" ");
   if (Light.getValue() >=2){//If the voltage from the light sensor is greater than 2v turn realy off
     digitalWrite(PIN_Light,LOW);}
