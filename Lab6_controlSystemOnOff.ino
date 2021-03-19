@@ -1,3 +1,5 @@
+#include <PID_v1.h>
+
 //BRENDAN O BOYLE
 //LAB 6
 //MAIN
@@ -5,6 +7,9 @@
 
 #define PIN_SENSOR A1
 #define PIN_Light 9
+#define PIN_INPUT 0
+#define PIN_OUTPUT 3
+ 
 
 
 class LightSensor {
@@ -51,9 +56,21 @@ class LightSensor {
 //object classes
 
 LightSensor Light = LightSensor(PIN_SENSOR);
+//Define Variables we'll be connecting to
+double Setpoint, Input, Output;
+//Specify the links and initial tuning parameters
+double Kp=2, Ki=5, Kd=1;
+PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
+ 
 
 void setup() {
   Serial.begin(9600);//open the serial port at 9600 bps:
+   //initialize the variables we're linked to
+ Input = analogRead(PIN_INPUT);
+ Setpoint = 100;
+ 
+ //turn the PID on
+ myPID.SetMode(AUTOMATIC);
 }
 
 void loop() {
@@ -66,4 +83,16 @@ void loop() {
     else{
       digitalWrite(PIN_Light,HIGH);//If the voltage from the light sensor is less than 2v turn realy on
     }
+     Input = analogRead(PIN_INPUT);
+ myPID.Compute();
+ analogWrite(PIN_OUTPUT, Output);
   }
+
+
+
+ 
+
+
+
+
+ 
